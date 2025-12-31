@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Happy New Year 2026 | Jvalt Web Creator</title>
+<title>Countdown to 2026 | Jvalt Web Creator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -13,109 +13,85 @@
 }
 
 body {
-    overflow: hidden;
-    background: radial-gradient(circle at bottom, #020111, #000000);
+    min-height: 100vh;
+    background: linear-gradient(135deg, #020024, #090979, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-family: 'Segoe UI', Arial, sans-serif;
-}
-
-/* Brand */
-.brand {
-    position: fixed;
-    bottom: 20px;
-    right: 25px;
-    font-size: 0.95rem;
-    letter-spacing: 1px;
-    color: #ffd700;
-    opacity: 0.85;
-    text-shadow: 0 0 10px gold;
-    z-index: 20;
-}
-
-/* Center Content */
-.center-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 10;
     color: #fff;
 }
 
-.center-text h1 {
-    font-size: clamp(2.2rem, 6vw, 4.5rem);
-    color: gold;
-    text-shadow: 0 0 20px gold, 0 0 60px crimson;
-    animation: glow 2s infinite alternate;
+.container {
+    text-align: center;
+    padding: 30px;
 }
 
-.center-text p {
-    margin-top: 12px;
-    font-size: 1.15rem;
-    opacity: 0.9;
+h1 {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: #ffd700;
+    text-shadow: 0 0 20px gold;
+    margin-bottom: 10px;
 }
 
-/* Countdown */
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    margin-bottom: 25px;
+}
+
 .countdown {
     display: flex;
-    gap: 14px;
+    gap: 15px;
     justify-content: center;
-    margin-top: 25px;
+    flex-wrap: wrap;
 }
 
-.time-box {
-    background: rgba(255,255,255,0.08);
-    padding: 12px 16px;
-    border-radius: 10px;
-    min-width: 80px;
+.box {
+    background: rgba(255,255,255,0.12);
+    padding: 15px 18px;
+    border-radius: 12px;
+    min-width: 90px;
     backdrop-filter: blur(6px);
 }
 
-.time-box span {
-    font-size: 1.8rem;
+.box span {
+    display: block;
+    font-size: 2rem;
     font-weight: bold;
     color: #ffd700;
 }
 
-.time-box small {
-    display: block;
-    font-size: 0.7rem;
+.box small {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
     opacity: 0.8;
 }
 
-/* Glow */
-@keyframes glow {
-    from { text-shadow: 0 0 20px gold; }
-    to { text-shadow: 0 0 50px gold, 0 0 100px red; }
-}
-
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
+.footer {
+    margin-top: 30px;
+    font-size: 0.85rem;
+    opacity: 0.75;
 }
 </style>
 </head>
 <body>
 
-<div class="center-text">
-    <h1 id="title">⏳ Countdown to 2026 🎆</h1>
-    <p id="subtitle">The Future Begins Soon</p>
+<div class="container">
+    <h1 id="title">Countdown to 2026</h1>
+    <div class="subtitle" id="subtitle">The Future Begins Soon</div>
 
     <div class="countdown" id="countdown">
-        <div class="time-box"><span id="days">0</span><small>DAYS</small></div>
-        <div class="time-box"><span id="hours">0</span><small>HOURS</small></div>
-        <div class="time-box"><span id="minutes">0</span><small>MINUTES</small></div>
-        <div class="time-box"><span id="seconds">0</span><small>SECONDS</small></div>
+        <div class="box"><span id="days">0</span><small>DAYS</small></div>
+        <div class="box"><span id="hours">0</span><small>HOURS</small></div>
+        <div class="box"><span id="minutes">0</span><small>MINUTES</small></div>
+        <div class="box"><span id="seconds">0</span><small>SECONDS</small></div>
     </div>
+
+    <div class="footer">© Jvalt Web Creator</div>
 </div>
 
-<div class="brand">© Jvalt Web Creator</div>
-
-<canvas id="fireworks"></canvas>
-
 <script>
-// ===== COUNTDOWN =====
 const targetDate = new Date("January 1, 2026 00:00:00").getTime();
 
 const daysEl = document.getElementById("days");
@@ -131,8 +107,8 @@ setInterval(() => {
     const distance = targetDate - now;
 
     if (distance <= 0) {
-        titleEl.innerHTML = "🎉 Happy New Year 2026 🎆";
-        subtitleEl.innerHTML = "Powered by Jvalt Web Creator";
+        titleEl.textContent = "Happy New Year 2026 🎉";
+        subtitleEl.textContent = "Wishing You Success & Prosperity";
         countdownEl.style.display = "none";
         return;
     }
@@ -142,72 +118,6 @@ setInterval(() => {
     minutesEl.textContent = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     secondsEl.textContent = Math.floor((distance % (1000 * 60)) / 1000);
 }, 1000);
-
-// ===== FIREWORKS =====
-const canvas = document.getElementById("fireworks");
-const ctx = canvas.getContext("2d");
-
-function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener("resize", resize);
-
-class Firework {
-    constructor(x, y) {
-        this.particles = [];
-        const colors = ["#ff004c", "#ffd700", "#00eaff", "#ffffff", "#ff7b00"];
-        for (let i = 0; i < 90; i++) {
-            this.particles.push({
-                x, y,
-                vx: (Math.random() - 0.5) * 7,
-                vy: (Math.random() - 0.5) * 7,
-                life: 100,
-                color: colors[Math.floor(Math.random() * colors.length)]
-            });
-        }
-    }
-    update() {
-        this.particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-            p.life--;
-        });
-    }
-    draw() {
-        this.particles.forEach(p => {
-            ctx.fillStyle = p.color;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-            ctx.fill();
-        });
-    }
-}
-
-let fireworks = [];
-
-function animate() {
-    ctx.fillStyle = "rgba(0,0,0,0.25)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    fireworks.forEach((fw, i) => {
-        fw.update();
-        fw.draw();
-        if (fw.particles[0].life <= 0) fireworks.splice(i, 1);
-    });
-
-    requestAnimationFrame(animate);
-}
-
-setInterval(() => {
-    fireworks.push(new Firework(
-        Math.random() * canvas.width,
-        Math.random() * canvas.height / 2
-    ));
-}, 900);
-
-animate();
 </script>
 
 </body>
